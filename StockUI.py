@@ -1,6 +1,5 @@
 # 配置下载的界面和启动下载的地方，同时可以保存数据
 import tkinter
-import StockConfig
 import stock as stk
 
 
@@ -9,23 +8,28 @@ def download():
     if len(code_number) == 0 or len(code_number) != 6 or not (code_number.isdigit()):
         print('请输入股票代码')
         text.delete(0.0, tkinter.END)
-        text.insert(tkinter.INSERT, "请输入股票代码"+'\n')
+        text.insert(tkinter.INSERT, "请输入股票代码" + '\n')
+        text.see(tkinter.END)
+
     else:
         # 还要增加很多判断，如是不是股票代码，股票数据下载的进度条,然后即使六位数字的字符是不是股票代码了
-        text.delete(0.0, tkinter.END)
-        text.insert(tkinter.INSERT, "开始下载"+'\n')
+        # text.delete(0.0, tkinter.END)
+        text.insert(tkinter.INSERT, code_number+"开始下载 " + '\n')
+        text.see(tkinter.END)
         print(code_number)
         list = get_filters()
-        print('列表数据',list)
+        print('列表数据', list)
         stk.get_filter_list(list)
-        text.insert(tkinter.INSERT, "下载中"+'\n')
+        text.insert(tkinter.INSERT, "下载中" + '\n')
         try:
             time_list = stk.get_time_param(code_number)
             stk.get_html(time_list)
-            text.insert(tkinter.INSERT, "下载完成"+'\n')
+            text.insert(tkinter.INSERT,code_number+ "下载完成" + '\n')
+            text.see(tkinter.END)
         except:
-             print('股票编码不存存在，请检查代码')
-             text.insert(tkinter.INSERT, "下载失败：股票编码不存存在，请检查代码" + '\n')
+            print('股票编码不存存在，请检查代码')
+            text.insert(tkinter.INSERT, code_number+"下载失败：股票编码不存存在，请检查代码" + '\n')
+            text.see(tkinter.END)
 
 
 def get_filters():
@@ -118,8 +122,14 @@ check12.pack()
 button_down = tkinter.Button(win, text='下载', fg='green', bg='gray', command=download)
 button_down.pack()
 
+scroll = tkinter.Scrollbar()  # 滚动条
+scroll.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 text = tkinter.Text(win, width=500, height=20)
+text.pack(side=tkinter.LEFT, fill=tkinter.Y)
+scroll.config(command=text.yview)
+text.config(yscrollcommand=scroll.set)
 text.pack()
+# text = tkinter.Text(win, width=500, height=20)
+# text.pack()
 
 win.mainloop()
-
