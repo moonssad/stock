@@ -12,6 +12,7 @@ def download():
         text.insert(tkinter.INSERT, "请输入股票代码"+'\n')
     else:
         # 还要增加很多判断，如是不是股票代码，股票数据下载的进度条,然后即使六位数字的字符是不是股票代码了
+        text.delete(0.0, tkinter.END)
         text.insert(tkinter.INSERT, "开始下载"+'\n')
         print(code_number)
         list = get_filters()
