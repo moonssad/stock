@@ -8,6 +8,7 @@ def get_html(time_list=StockConfig.time_list):
     url = StockConfig.detail_stock_url.format(time_list, filters)
     print(url)
     respose = requests.get(url, headers=StockConfig.headers, verify=False)
+    print(respose.status_code)
     with open(StockConfig.stock_code + ".csv", "wb") as code:
         code.write(respose.content)
     print('完成')
@@ -19,6 +20,7 @@ def get_time_param(code=StockConfig.stock_code):
     list_time.append(code)
     url = StockConfig.get_time_url.format(code)
     respose = requests.get(url, headers=StockConfig.headers)
+    print(respose.status_code)
     soup = BeautifulSoup(respose.text, 'lxml')
     start_time = soup.select("input[name='date_start_type']")[0]['value']
     start_time = start_time.replace("-", "")
@@ -42,5 +44,8 @@ def get_filter_list(dict=StockConfig.dict):
 
 if __name__ == '__main__':
     get_filter_list(StockConfig.dict)
-    time_list = get_time_param(StockConfig.stock_code)
-    get_html(time_list)
+    try :
+        time_list = get_time_param('999999')
+        get_html(time_list)
+    except Exception as es:
+        print('编号不存在，请检查股票编码')

@@ -18,10 +18,13 @@ def download():
         print('列表数据',list)
         stk.get_filter_list(list)
         text.insert(tkinter.INSERT, "下载中"+'\n')
-        time_list = stk.get_time_param(code_number)
-        stk.get_html(time_list)
-        text.insert(tkinter.INSERT, "下载完成"+'\n')
-
+        try:
+            time_list = stk.get_time_param(code_number)
+            stk.get_html(time_list)
+            text.insert(tkinter.INSERT, "下载完成"+'\n')
+        except:
+             print('股票编码不存存在，请检查代码')
+             text.insert(tkinter.INSERT, "下载失败：股票编码不存存在，请检查代码" + '\n')
 
 
 def get_filters():
