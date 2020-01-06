@@ -9,7 +9,7 @@ def get_html(time_list=StockConfig.time_list):
     print(url)
     respose = requests.get(url, headers=StockConfig.headers, verify=False)
     print(respose.status_code)
-    with open(StockConfig.stock_code + ".csv", "wb") as code:
+    with open(time_list[0] + ".csv", "wb") as code:
         code.write(respose.content)
     print('完成')
 
